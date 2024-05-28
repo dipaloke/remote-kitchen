@@ -131,6 +131,7 @@ export const CreateItemModal = ({ open, onClose }: CreateItemProps) => {
             accept="image/*"
             onChange={handleImageChange}
             className="mb-4"
+            required
           />
 
         </div>

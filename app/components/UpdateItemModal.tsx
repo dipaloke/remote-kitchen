@@ -118,7 +118,7 @@ export const UpdateItemModal = ({ open, onClose, item }: UpdateItemProps) => {
             error={Boolean(errors.price)}
             helperText={errors.price}
           />
-          <input type="file" accept="image/*" onChange={handleImageChange} />
+          <input type="file" accept="image/*" onChange={handleImageChange} required />
           {formData.src && (
             <Image
               src={formData.src}
