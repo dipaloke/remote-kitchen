@@ -1,3 +1,4 @@
+
 import Image from "next/image";
 
 import { Box, Button, Divider, Paper } from "@mui/material";
@@ -12,6 +13,8 @@ interface CardProps {
   description: string;
   price: string;
   src: string;
+  onEdit: () => void;
+  onDelete: () => void;
 }
 
 export const FoodItemCard = ({
@@ -20,20 +23,21 @@ export const FoodItemCard = ({
   description,
   price,
   src,
+  onEdit,
+  onDelete,
 }: CardProps) => {
   return (
     <Grid xs={12} sm={6} md={4} lg={3}>
       <Paper elevation={5} className="h-full flex flex-col">
-        <div className="relative w-full h-40">
+        <Box className="relative w-full h-40">
           <Image
             src={src}
             alt={name}
             fill
-            style={{ objectFit: "cover" }}
-            className="w-full h-full pb-2"
+            className="w-full h-full pb-2 object-cover"
           />
-        </div>
-        <div className="flex flex-col flex-1 p-2">
+        </Box>
+        <Box className="flex flex-col flex-1 p-2">
           <Typography variant="h6">{name}</Typography>
           <Typography
             component="h2"
@@ -47,14 +51,24 @@ export const FoodItemCard = ({
           </Typography>
           <Divider />
           <div className="flex justify-center gap-x-8 md:justify-around mt-4 mb-2">
-            <Button variant="outlined" color="error" startIcon={<DeleteIcon />}>
+            <Button
+              variant="outlined"
+              color="error"
+              startIcon={<DeleteIcon />}
+              onClick={onDelete}
+            >
               Delete
             </Button>
-            <Button variant="contained" color="secondary" endIcon={<Edit />}>
+            <Button
+              variant="contained"
+              color="secondary"
+              endIcon={<Edit />}
+              onClick={onEdit}
+            >
               Edit
             </Button>
           </div>
-        </div>
+        </Box>
       </Paper>
     </Grid>
   );

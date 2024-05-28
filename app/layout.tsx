@@ -4,9 +4,11 @@ import "./globals.css";
 import { ThemeProvider } from "@mui/material/styles";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 import theme from "./theme";
+
 import { CssBaseline } from "@mui/material";
 import { NavBar } from "./components/NavBar";
 import { Footer } from "./components/Footer";
+
 
 export const metadata: Metadata = {
   title: "Remote kitchen App",

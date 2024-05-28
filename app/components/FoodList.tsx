@@ -1,43 +1,97 @@
-"use client"
+"use client";
+import { useEffect, useState } from "react";
+
 import { FoodItemCard } from "./FoodItemCard";
-import { Data } from "@/data/data";
+import { CreateItemModal } from "./CreateItemModal";
+import { UpdateItemModal } from "./UpdateItemModal";
+import { FoodItem } from "../stores/useFoodStore";
+import useFoodStore from "../stores/useFoodStore";
 
 import Grid from "@mui/material/Unstable_Grid2";
-import { Button, Container } from "@mui/material";
+import { Box, Button, Container, Typography } from "@mui/material";
 import { AddCircleOutline } from "@mui/icons-material";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const FoodList = () => {
+  const { items, deleteItem } = useFoodStore();
 
-  const handleClick = () => {
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [currentItem, setCurrentItem] = useState<FoodItem | null>(null);
 
-  }
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    queryClient.setQueryData("foodItems" as any, items);
+  }, [items, queryClient]);
+
+  const { data: foodItems } = useQuery({
+    queryKey: ["foodItems"],
+    queryFn: () => items,
+    initialData: items,
+  });
+
+  const handleCreateClick = () => {
+    setIsCreateModalOpen(true);
+  };
+
+  const handleEditClick = (item: FoodItem) => {
+    setCurrentItem(item);
+    setIsUpdateModalOpen(true);
+  };
+
+  const handleDeleteClick = (id: number) => {
+    deleteItem(id);
+    queryClient.invalidateQueries(["foodItems"] as any);
+  };
 
   return (
-    <div>
+    <>
       <Container>
         <div className="mb-5 justify-end flex">
           <Button
             variant="outlined"
             color="secondary"
             startIcon={<AddCircleOutline />}
-            onClick={handleClick}
+            onClick={handleCreateClick}
           >
             Add Items
           </Button>
         </div>
+
         <Grid container spacing={5}>
-          {Data.map((item) => (
-            <FoodItemCard
-              key={item.id}
-              id={item.id}
-              description={item.description}
-              name={item.name}
-              price={item.price}
-              src={item.src}
-            />
-          ))}
+          {items.length ? (
+            foodItems.map((item) => (
+              <FoodItemCard
+                key={item.id}
+                id={item.id}
+                description={item.description}
+                name={item.name}
+                price={item.price}
+                src={item.src}
+                onEdit={() => handleEditClick(item)}
+                onDelete={() => handleDeleteClick(item.id)}
+              />
+            ))
+          ) : (
+            <Box component="desc">
+              <Typography variant="h5">Please add an item</Typography>
+            </Box>
+          )}
         </Grid>
+
+        <CreateItemModal
+          open={isCreateModalOpen}
+          onClose={() => setIsCreateModalOpen(false)}
+        />
+        {currentItem && (
+          <UpdateItemModal
+            open={isUpdateModalOpen}
+            onClose={() => setIsUpdateModalOpen(false)}
+            item={currentItem}
+          />
+        )}
       </Container>
-    </div>
+    </>
   );
 };
