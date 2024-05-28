@@ -14,7 +14,6 @@ import {
   TextField,
 } from "@mui/material";
 
-
 interface CreateItemProps {
   open: boolean;
   onClose: () => void;
@@ -101,7 +100,6 @@ export const CreateItemModal = ({ open, onClose }: CreateItemProps) => {
             onChange={handleChange}
             variant="outlined"
             fullWidth
-            className="mb-4"
             required
           />
           <TextField
@@ -113,7 +111,6 @@ export const CreateItemModal = ({ open, onClose }: CreateItemProps) => {
             helperText={errors.description}
             variant="outlined"
             fullWidth
-            className="mb-4"
           />
           <TextField
             label="Price"
@@ -124,16 +121,13 @@ export const CreateItemModal = ({ open, onClose }: CreateItemProps) => {
             helperText={errors.price}
             variant="outlined"
             fullWidth
-            className="mb-4"
           />
           <input
             type="file"
             accept="image/*"
             onChange={handleImageChange}
-            className="mb-4"
             required
           />
-
         </div>
       </DialogContent>
       <DialogActions className="justify-end pb-4">
