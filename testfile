@@ -1,0 +1,7 @@
+tfile
+git status
+git add testfile
+git status
+git commit -m "this is test file for credentials- 1st method"
+git push
+gjdgf
